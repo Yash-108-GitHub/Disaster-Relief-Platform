@@ -1,0 +1,99 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+
+}
+
+.container{ /* of boilerplate*/
+    flex:1; /*only here footer will placed at bottom by this*/
+}
+
+h1{
+  color: aqua;
+}
+.h{
+  height: 56px !important ;
+  width: 100%;
+ 
+}
+
+.h-partition{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  height: 100%;
+
+}
+.hamburger {
+  position: fixed;
+  top: 0px;
+  left: 15px;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1001; /* keep above sidebar */
+  color: black;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+/* Sidebar navbar */
+.left-navbar {
+  position: fixed;
+  top: 0;
+  left: -350px; /* hidden by default */
+  width: 300px;
+  height: 100vh;
+   border-right: 1px solid #c2c2c2; /* vertical line */
+  background: #F8F9FA;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+.left-navbar.show {
+  left: 0; /* visible when active */
+}
+
+.left-navbar .nav-top{
+   height:56px;
+   background-color: #99cdd8;
+}
+.left-navbar .menu{
+  margin-top: 45px;
+}
+.left-navbar .menu ul {
+  list-style: none; /* removes bullets/dots */
+  padding: 0;       /* removes default padding */
+  margin: left 95px;        /* removes default margin */
+}
+
+.left-navbar .menu li{
+  margin-top: 6px;
+  /* padding: 14px 20px; */
+  margin-left: 95px;
+  padding: 12px;
+  color:#000;
+  cursor: pointer;
+}
+
+.left-navbar .menu a{
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+}
+.menu li:hover {
+  background: rgb(0, 0, 0,0.1);
+  border-radius: 16px;
+}
+
+
+.left-navbar #nav-home , .home{
+  margin-left: 100px;
+  color:#000;
+  text-decoration: none;
+  font-size: large;
+}
