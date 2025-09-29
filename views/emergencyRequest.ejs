@@ -1,0 +1,20 @@
+<% layout("/layouts/form_boilerplate")%>
+<div class="row">
+    <div class="col col-8 offset-2">
+        <h3>Urgent Assistance Form</h3>
+        <form method="post" action="/request" novalidate class="needs-validation">
+            <div class="mb-3">
+                <label for="Disaster" class="form-label">Disaster type</label>
+                <input id="Disaster" placeholder="eg:%" type="number" class="form-control" required/>
+                <div class="valid-feedback">please enter valid details</div>
+            </div>
+            <!-- ----------------------------------- -->
+            <div class="mb-3">
+                <label for="location" class="form-label">location</label>
+                <input id="location"  type="text" class="form-control" required/>
+                <div class="valid-feedback">please enter valid details</div>
+            </div>
+            <button class="btn btn-success">Submit</button>
+        </form>
+    </div>
+</div>

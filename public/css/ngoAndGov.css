@@ -1,0 +1,21 @@
+
+
+table{width:100%;border-collapse:collapse;background:var(--card-bg);border-radius:10px;overflow:hidden;box-shadow:var(--soft-shadow)}
+thead th{background:#f0f6ff;padding:12px 14px;text-align:left;font-size:13px;color:var(--muted);border-bottom:1px solid #eef6ff}
+tbody td{padding:12px 14px;border-bottom:1px solid #f5f8ff;font-size:14px}
+tbody tr:last-child td{border-bottom:none}
+.pill{display:inline-block;padding:6px 10px;border-radius:999px;font-size:13px}
+.status-open{background:#fff6e6;color:#a56b00}
+.status-assigned{background:#e8f5ff;color:#0b66b7}
+.status-resolved{background:#e9fbe7;color:#2a7a2a}
+.priority-high{background:#ffecec;color:#c33b3b}
+.priority-medium{background:#fff7e0;color:#b57d00}
+.priority-low{background:#eef7ff;color:#165a9c}
+.action-btn{padding:6px 10px;border-radius:8px;border:1px solid #e6eefc;background:transparent;cursor:pointer}
+
+
+/* Card Grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.card{background:var(--card-bg);padding:12px;border-radius:12px;box-shadow:var(--soft-shadow);display:flex;flex-direction:column;gap:8px}
+.card h4{margin:0;font-size:16px}
+.muted{color:var(--muted);font-size:13px}

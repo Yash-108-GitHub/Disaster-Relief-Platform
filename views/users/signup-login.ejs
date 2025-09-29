@@ -1,0 +1,63 @@
+<% layout("/layouts/landingPage")%>
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%; border-radius: 15px;">
+            <h3 class="text-center mb-4 fw-bold">Create Account</h3>
+
+            <!-- Social Signup -->
+            <div class="d-flex justify-content-between mb-3">
+                <button class="btn btn-outline-primary w-50 me-2 Signup_btn_dom"> Sign up</button>
+
+                <button class="btn btn-outline-success w-50 login_btn_dom">Login</button>
+            </div>
+
+            <!-- Form signup-->
+            <form action="/signup" method="POST" class="Signup_form">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input name="username" type="text" class="form-control rounded-pill" placeholder="Enter your name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email </label>
+                    <input name="email" type="email" class="form-control rounded-pill" placeholder="Enter your email or phone">
+                </div>
+                <div class="dropdown">
+                    <button id="dropdownBtn" class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Choose Role
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" data-role="Victim" >Victim</a></li>
+                        <li><a class="dropdown-item" data-role="Volunteer" >Volunteer</a></li>
+                        <li><a class="dropdown-item" data-role="NGO" >NGO</a></li>
+                        <li><a class="dropdown-item" data-role="Government">Government</a></li>
+                    </ul>
+
+                    <input type="hidden" name="role" id="roleInput" >
+                    <!-- we cant use name attribute in anchor tag so use data-name -->
+                    <!-- and there is many data-name , so we cant extract directly by req.body -->
+                    <!-- solution-> use and hidden input tag having name=role and by dom manipulation set the data-name as role in name of input -->
+                </div>
+
+                
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input name="Password" type="password" class="form-control rounded-pill" placeholder="Enter password">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 rounded-pill">Sign Up</button>
+            </form>
+
+            <!-- Form login  -- initially none-->
+            <form action="/login" method="POST" class="login_form" style="display: none;">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input name="Username" type="text" name="username" id="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input name="Password" type="password" name="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100 rounded-pill">Login</button>
+            </form>
+        </div>
+    </div>

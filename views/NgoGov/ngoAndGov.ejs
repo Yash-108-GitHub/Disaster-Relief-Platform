@@ -1,0 +1,48 @@
+<!-- <nav class="nav" aria-label="Main navigation">
+    <a href="#">Dashboard</a>
+    <a href="#">All Requests</a>
+    <a href="#">Volunteers</a>
+    <a href="#">Resources</a>
+    <a href="#">Reports</a>
+</nav> -->
+<% layout("/layouts/generalBoilerplate")%>
+
+<link rel="stylesheet" href="/css/ngoAndGov.css">
+
+<h2 class="mb-5 mt-3">All Requests (NGO / Government)</h2>
+
+<div>
+    
+</div>
+
+<div >
+        <table >
+            <thead>
+                <tr>
+                    <th>Username </th>
+                    <th>Location </th>
+                    <th>Status </th>
+                    <th>Action </th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if(data && data.length > 0) { %>
+                    <% for(let i = 0; i < data.length; i++) { %>
+                        <tr href="/action">
+                            <td><%= data[i].username%></td>
+                            <td><%= data[i].location %></td>
+                            <td><%= data[i].status %></td>
+                            <td><a href="/helpVictim">Help</a></td>
+                        </tr>
+                    <% } %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="3">No records found</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    
+<div>
+        
+

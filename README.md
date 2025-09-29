@@ -1,1 +1,0 @@
-# Disaster-Relief-Platform

@@ -97,3 +97,42 @@ h1{
   text-decoration: none;
   font-size: large;
 }
+
+.emergency-btn {
+  margin-top: 100px;
+  margin-left: 50%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50% !important;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+ 
+}
+
+.platform-header {
+  text-align: center;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #0D1B4C, #4F8CFF);
+  color: white;
+  border-radius: 12px;
+  margin: 20px;
+}
+.platform-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+.platform-header p {
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+.x{
+  margin-top: 100px;
+  margin-left: 25%;
+  display: flex;
+}
+
+.signupLogin{
+  display: flex !important;
+  justify-content: space-between !important;
+  margin-left: 500px !important;
+}
