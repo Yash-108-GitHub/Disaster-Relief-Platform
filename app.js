@@ -1,5 +1,8 @@
 const express = require("express");
 const app = express();
+
+require('dotenv').config();
+
 // const mongoose = require("mongoose");
 const path = require("path");
 // const methodOverride = require("method-override");
@@ -15,6 +18,9 @@ const victimRouter = require("./routes/victim/request.js");
 const ngoRouter = require("./routes/ngo/ngoRoutes.js");
 const userRouter = require("./routes/user.js");
 
+//web atlas
+const MONGO_URL = process.env.MONGO_URL;
+
 app.set("views",path.join(__dirname,"views"));
 app.set("view engine","ejs");
 
@@ -24,7 +30,8 @@ app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 app.use(express.urlencoded({ extended: true }));
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/reliefSystem";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/reliefSystem";
+
 
 main()
  .then(()=>{
