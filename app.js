@@ -40,7 +40,7 @@ app.use(express.json());
 const User = require("./models/user.js"); 
 const Requests = require("./models/Requests.js");
 
-//web atlas
+//web database atlas
 const MONGO_URL = process.env.MONGO_URL;
 
 // local db
@@ -71,22 +71,33 @@ async function main(){
 
 const store = MongoStore.create({
     mongoUrl : MONGO_URL,
+    collectionName: "sessions",
     crypto: {
         secret: process.env.SECRET,
     },
     touchAfter :24 * 3600,
 });
 
+store.on("error", function(e){
+  console.log("SESSION STORE ERROR", e)
+});
+
 
 app.use(session({
   store,
-  secret : "mysecret",
   resave : false,
   saveUninitialized : false,
+
+  // secret : "mysecret",
+  secret : process.env.SECRET,
+
   cookie: {
-    maxAge: 1000 * 60 * 60 * 1000, // 
-    httpOnly : true
-  }
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 1000 * 60 * 60 * 24,
+
+    httpOnly : true,
+    // secure: true,
+  },
 }));
 
 // Passport setup
