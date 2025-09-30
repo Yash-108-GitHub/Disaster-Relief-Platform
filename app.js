@@ -1,7 +1,7 @@
+require('dotenv').config();
+
 const express = require("express");
 const app = express();
-
-require('dotenv').config();
 
 const path = require("path");
 // const methodOverride = require("method-override");
@@ -69,6 +69,9 @@ async function main(){
 // When the user makes a new request, the cookie is sent back.
 // passport.session() uses that cookie’s session ID to find the logged-in user, and attaches them as req.user.
 
+
+
+
 // const store = MongoStore.create({
 //     mongoUrl : MONGO_URL,
 //     collectionName: "sessions",
@@ -80,16 +83,20 @@ async function main(){
 
 const store = MongoStore.create({
   mongoUrl: MONGO_URL,
-  collectionName: "sessions", // make sure this is set
-  crypto: { secret: process.env.SECRET },
-  touchAfter: 24 * 3600, // reduces writes
+  collectionName: "sessions",
+  crypto: { 
+    secret: process.env.SECRET 
+  },
+  touchAfter: 24 * 3600,
 });
 
-store.on("error", (err) => {
-  console.error("SESSION STORE ERROR:", err);
+// Better error handling
+store.on('error', function(error) {
+  console.log('SESSION STORE ERROR:', error);
 });
-store.on("connected", () => {
-  console.log("MongoStore connected to Atlas!");
+
+store.on('connected', function() {
+  console.log('MongoStore connected to MongoDB Atlas');
 });
 
 
@@ -107,7 +114,7 @@ store.on("connected", () => {
 //     maxAge: 1000 * 60 * 60 * 24,
 
 //     httpOnly : true,
-//     // secure: true,
+//     // secure: false,
 //   },
 // }));
 
@@ -116,13 +123,13 @@ app.use(
     store,
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: false, // MUST be false
+    saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: true,
-      secure: true, // set to true only if HTTPS
-      sameSite: "lax",
-    },
+      secure: true, // Set to true in production with HTTPS
+      sameSite: 'lax'
+    }
   })
 );
 
@@ -131,18 +138,38 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(User.createStrategy());
+// Debug middleware
+app.use((req, res, next) => {
+  console.log('=== SESSION DEBUG ===');
+  console.log('Session ID:', req.sessionID);
+  console.log('Session:', req.session);
+  console.log('Passport in session:', req.session?.passport);
+  console.log('User:', req.user);
+  console.log('Is authenticated:', req.isAuthenticated());
+  console.log('=== END DEBUG ===');
+  next();
+});
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.use(new LocalStrategy(User.authenticate()));
 
 
-app.use((req,res,next)=>{
-  // console.log("req.sessionID:", req.sessionID);
-  // console.log("Session cookie:", req.session);
-  // console.log("req.session.passport:", req.session.passport);
-  console.log("Logged in user:", req.user);
-    next();
+
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+// With explicit methods:
+passport.serializeUser((user, done) => {
+  console.log('Serializing user:', user.id);
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    console.log('Deserializing user:', user);
+    done(null, user);
+  } catch (error) {
+    done(error);
+  }
 });
 
 
@@ -161,6 +188,21 @@ app.get("/showRequest", async (req,res)=>{
   res.render("NgoGov/ngoAndGov.ejs", {allRequests});
 });
 
+// Add this route temporarily
+app.get('/debug-users', async (req, res) => {
+    try {
+        const users = await User.find({});
+        console.log('=== ALL USERS IN DATABASE ===');
+        users.forEach(user => {
+            console.log(`Username: ${user.username}, Email: ${user.email}, Role: ${user.role}`);
+        });
+        console.log('=== END USERS LIST ===');
+        res.json(users);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 //Implementing routers
 app.use("/", victimRouter);
@@ -172,13 +214,6 @@ app.get("/helpVictim/:id", async (req,res)=>{
 });
 
 
-app.get("/test-session", (req, res) => {
-  req.session.foo = "bar";
-  req.session.save(err => {
-    if(err) return res.send("Error saving session: "+err);
-    res.send("Session saved! Check Atlas.");
-  });
-});
 
 
 app.listen("3000",()=>{

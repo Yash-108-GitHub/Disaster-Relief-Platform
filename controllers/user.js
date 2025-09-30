@@ -77,20 +77,40 @@ module.exports.renderLoginForm = (req, res) => {
 
 module.exports.login = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return res.redirect("/login");
+    if (err) {
+      console.log('Auth error:', err);
+      return next(err);
+    }
+    if (!user) {
+      console.log('No user found:', info);
+      return res.redirect("/login");
+    }
 
     req.logIn(user, (err) => {
-      if (err) return next(err);
+      if (err) {
+        console.log('Login error:', err);
+        return next(err);
+      }
 
-      req.session.save(err => {   // ensures session is written
-        if (err) return next(err);
-
-        // redirect based on role
+      console.log('User logged in:', user.id);
+      
+      // Save session explicitly
+      req.session.save((err) => {
+        if (err) {
+          console.log('Session save error:', err);
+          return next(err);
+        }
+        
+        console.log('Session saved, user in session:', req.session.passport);
+        
+        // Redirect based on role
         if (user.role === "Victim") return res.redirect("/victim/dashboard");
         if (user.role === "Volunteer") return res.redirect("/volunteer/dashboard");
         if (user.role === "NGO") return res.redirect("/ngo/dashboard");
         if (user.role === "Government") return res.redirect("/government/dashboard");
+        
+        // Fallback
+        return res.redirect("/");
       });
     });
   })(req, res, next);
