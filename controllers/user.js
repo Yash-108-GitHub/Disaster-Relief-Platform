@@ -58,19 +58,40 @@ module.exports.renderLoginForm = (req, res) => {
 // }
 
 // Login handler
+// module.exports.login = (req, res, next) => {
+//   passport.authenticate("local", (err, user, info) => {
+//     if (err) return next(err);
+//     if (!user) return res.redirect("/login"); // login failed
+
+//     req.logIn(user, (err) => {
+//       if (err) return next(err);
+
+//       // Redirect based on role
+//       if (user.role === "Victim") return res.render("victim/dashboard.ejs");
+//       if (user.role === "Volunteer") return res.render("volunteer/dashboard.ejs");
+//       if (user.role === "NGO") return res.render("NGO/dashboard.ejs");
+//       if (user.role === "Government") return res.render("Government/dashboard.ejs");
+//     });
+//   })(req, res, next);
+// };
+
 module.exports.login = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
-    if (!user) return res.redirect("/login"); // login failed
+    if (!user) return res.redirect("/login");
 
     req.logIn(user, (err) => {
       if (err) return next(err);
 
-      // Redirect based on role
-      if (user.role === "Victim") return res.render("victim/dashboard.ejs");
-      if (user.role === "Volunteer") return res.render("volunteer/dashboard.ejs");
-      if (user.role === "NGO") return res.render("NGO/dashboard.ejs");
-      if (user.role === "Government") return res.render("Government/dashboard.ejs");
+      req.session.save(err => {   // ensures session is written
+        if (err) return next(err);
+
+        // redirect based on role
+        if (user.role === "Victim") return res.redirect("/victim/dashboard");
+        if (user.role === "Volunteer") return res.redirect("/volunteer/dashboard");
+        if (user.role === "NGO") return res.redirect("/ngo/dashboard");
+        if (user.role === "Government") return res.redirect("/government/dashboard");
+      });
     });
   })(req, res, next);
 };

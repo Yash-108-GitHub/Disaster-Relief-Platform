@@ -69,36 +69,63 @@ async function main(){
 // When the user makes a new request, the cookie is sent back.
 // passport.session() uses that cookie’s session ID to find the logged-in user, and attaches them as req.user.
 
+// const store = MongoStore.create({
+//     mongoUrl : MONGO_URL,
+//     collectionName: "sessions",
+//     crypto: {
+//         secret: process.env.SECRET,
+//     },
+//     touchAfter :24 * 3600,
+// });
+
 const store = MongoStore.create({
-    mongoUrl : MONGO_URL,
-    collectionName: "sessions",
-    crypto: {
-        secret: process.env.SECRET,
+  mongoUrl: MONGO_URL,
+  collectionName: "sessions", // make sure this is set
+  crypto: { secret: process.env.SECRET },
+  touchAfter: 24 * 3600, // reduces writes
+});
+
+store.on("error", (err) => {
+  console.error("SESSION STORE ERROR:", err);
+});
+store.on("connected", () => {
+  console.log("MongoStore connected to Atlas!");
+});
+
+
+
+// app.use(session({
+//   store,
+//   resave : false,
+//   saveUninitialized : false,
+
+//   // secret : "mysecret",
+//   secret : process.env.SECRET,
+
+//   cookie: {
+//     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+//     maxAge: 1000 * 60 * 60 * 24,
+
+//     httpOnly : true,
+//     // secure: true,
+//   },
+// }));
+
+app.use(
+  session({
+    store,
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false, // MUST be false
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      httpOnly: true,
+      secure: false, // set to true only if HTTPS
+      sameSite: "lax",
     },
-    touchAfter :24 * 3600,
-});
+  })
+);
 
-store.on("error", function(e){
-  console.log("SESSION STORE ERROR", e)
-});
-
-
-app.use(session({
-  store,
-  resave : false,
-  saveUninitialized : false,
-
-  // secret : "mysecret",
-  secret : process.env.SECRET,
-
-  cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-    maxAge: 1000 * 60 * 60 * 24,
-
-    httpOnly : true,
-    // secure: true,
-  },
-}));
 
 // Passport setup
 app.use(passport.initialize());
@@ -143,6 +170,16 @@ app.use("/", userRouter);
 app.get("/helpVictim/:id", async (req,res)=>{
   res.send("hi");
 });
+
+
+app.get("/test-session", (req, res) => {
+  req.session.foo = "bar";
+  req.session.save(err => {
+    if(err) return res.send("Error saving session: "+err);
+    res.send("Session saved! Check Atlas.");
+  });
+});
+
 
 app.listen("3000",()=>{
     console.log("app is listening on port 3000");
