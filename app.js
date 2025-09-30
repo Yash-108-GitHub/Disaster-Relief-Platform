@@ -43,7 +43,7 @@ const Requests = require("./models/Requests.js");
 //web atlas
 const MONGO_URL = process.env.MONGO_URL;
 
-//local db
+// local db
 // const MONGO_URL = "mongodb://127.0.0.1:27017/reliefSystem";
 
 
@@ -71,9 +71,9 @@ async function main(){
 
 const store = MongoStore.create({
     mongoUrl : MONGO_URL,
-    // crypto: {
-    //     secret: process.env.SECRET,
-    // },
+    crypto: {
+        secret: process.env.SECRET,
+    },
     touchAfter :24 * 3600,
 });
 
@@ -84,7 +84,7 @@ app.use(session({
   resave : false,
   saveUninitialized : false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 60, // 1 day
+    maxAge: 1000 * 60 * 60 * 1000, // 
     httpOnly : true
   }
 }));
@@ -101,15 +101,15 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>{
   // console.log("req.sessionID:", req.sessionID);
-  //   console.log("Session cookie:", req.session);
-  //   console.log("req.session.passport:", req.session.passport);
-  // console.log("Logged in user:", req.user);
+  // console.log("Session cookie:", req.session);
+  // console.log("req.session.passport:", req.session.passport);
+  console.log("Logged in user:", req.user);
     next();
 });
 
 
 app.get("/",(req,res)=>{
-  res.render("users/signup-login.ejs");
+  res.render("users/signup.ejs");
 });
 
 app.get("/home",(req,res)=>{
@@ -124,15 +124,14 @@ app.get("/showRequest", async (req,res)=>{
 });
 
 
-app.get("/helpVictim/:id", async (req,res)=>{
-  res.send("hi");
-});
-
 //Implementing routers
 app.use("/", victimRouter);
 app.use("/", ngoRouter);
 app.use("/", userRouter);
 
+app.get("/helpVictim/:id", async (req,res)=>{
+  res.send("hi");
+});
 
 app.listen("3000",()=>{
     console.log("app is listening on port 3000");

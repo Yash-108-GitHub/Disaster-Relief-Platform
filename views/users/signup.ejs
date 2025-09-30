@@ -5,11 +5,9 @@
             <h3 class="text-center mb-4 fw-bold">Create Account</h3>
 
             <!-- Social Signup -->
-            <div class="d-flex justify-content-between mb-3">
+            <!-- <div class="d-flex justify-content-between mb-3">
                 <button class="btn btn-outline-primary w-50 me-2 Signup_btn_dom"> Sign up</button>
-
-                <button class="btn btn-outline-success w-50 login_btn_dom">Login</button>
-            </div>
+            </div> -->
 
             <!-- Form signup-->
             <form action="/signup" method="POST" class="Signup_form">
@@ -38,7 +36,6 @@
                     <!-- solution-> use and hidden input tag having name=role and by dom manipulation set the data-name as role in name of input -->
                 </div>
 
-                
                 <div class="mb-3">
                     <label class="form-label">Password</label>
                     <input name="password" type="password" class="form-control rounded-pill" placeholder="Enter password">
@@ -47,18 +44,5 @@
                 <button type="submit" class="btn btn-primary w-100 rounded-pill">Sign Up</button>
             </form>
 
-            <!-- Form login  -- initially none-->
-            <form action="/login" method="POST" class="login_form" style="display: none;">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input name="username" type="text"  id="username" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" required>
-
-                </div>
-                <button type="submit" class="btn btn-success w-100 rounded-pill">Login</button>
-            </form>
         </div>
     </div>
