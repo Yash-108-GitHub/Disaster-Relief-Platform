@@ -4,11 +4,11 @@ const router = express.Router();
 const victumController = require("../../controllers/victim.js");
 
 
-router.route("/request")
- .get(victumController.renderRequestForm)
+router.route("/help-requests")
+ .get(victumController.renderGetRequestForm)
   .post(victumController.submitRequestForm);
 
-router.route("/myRequest")
+router.route("/victim/my-requests")
   .get(victumController.renderMyRequest);
 
 

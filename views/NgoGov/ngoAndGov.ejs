@@ -11,9 +11,6 @@
 
 <h2 class="mb-5 mt-3">All Requests (NGO / Government)</h2>
 
-<div>
-    
-</div>
 
 <div >
         <table >
@@ -26,13 +23,13 @@
                 </tr>
             </thead>
             <tbody>
-                <% if(data && data.length > 0) { %>
-                    <% for(let i = 0; i < data.length; i++) { %>
-                        <tr href="/action">
-                            <td><%= data[i].username%></td>
-                            <td><%= data[i].location %></td>
-                            <td><%= data[i].status %></td>
-                            <td><a href="/helpVictim">Help</a></td>
+                <% if(allRequests && allRequests.length > 0) { %>
+                    <% for(let i = 0; i < allRequests.length; i++) { %>
+                        <tr>
+                            <td><%= allRequests[i].requester.username%></td>
+                            <td><%= allRequests[i].location %></td>
+                            <td><%= allRequests[i].status %></td>
+                            <td><a href="/helpVictim/<%= allRequests[i]._id%>">Help</a></td>
                         </tr>
                     <% } %>
                 <% } else { %>
