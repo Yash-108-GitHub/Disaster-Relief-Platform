@@ -120,7 +120,7 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       httpOnly: true,
-      secure: false, // set to true only if HTTPS
+      secure: true, // set to true only if HTTPS
       sameSite: "lax",
     },
   })
