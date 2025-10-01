@@ -30,7 +30,7 @@
                         <li><a class="dropdown-item" data-role="Government">Government</a></li>
                     </ul>
 
-                    <input type="hidden" name="role" id="roleInput" >
+                    <input type="hidden" name="role" id="roleInput" required>
                     <!-- we cant use name attribute in anchor tag so use data-name -->
                     <!-- and there is many data-name , so we cant extract directly by req.body -->
                     <!-- solution-> use and hidden input tag having name=role and by dom manipulation set the data-name as role in name of input -->

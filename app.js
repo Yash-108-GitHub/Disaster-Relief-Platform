@@ -40,8 +40,9 @@ app.use(express.json());
 const User = require("./models/user.js"); 
 const Requests = require("./models/Requests.js");
 
-//web database atlas
+//web database atlas 
 const MONGO_URL = process.env.MONGO_URL;
+
 
 // local db
 // const MONGO_URL = "mongodb://127.0.0.1:27017/reliefSystem";
@@ -71,23 +72,13 @@ async function main(){
 
 
 
-
-// const store = MongoStore.create({
-//     mongoUrl : MONGO_URL,
-//     collectionName: "sessions",
-//     crypto: {
-//         secret: process.env.SECRET,
-//     },
-//     touchAfter :24 * 3600,
-// });
-
 const store = MongoStore.create({
-  mongoUrl: MONGO_URL,
-  collectionName: "sessions",
-  crypto: { 
-    secret: process.env.SECRET 
-  },
-  touchAfter: 24 * 3600,
+    mongoUrl : MONGO_URL,
+    collectionName: "sessions",
+    crypto: {
+        secret: process.env.SECRET,
+    },
+    touchAfter :24 * 3600,
 });
 
 // Better error handling
@@ -100,24 +91,6 @@ store.on('connected', function() {
 });
 
 
-
-// app.use(session({
-//   store,
-//   resave : false,
-//   saveUninitialized : false,
-
-//   // secret : "mysecret",
-//   secret : process.env.SECRET,
-
-//   cookie: {
-//     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-//     maxAge: 1000 * 60 * 60 * 24,
-
-//     httpOnly : true,
-//     // secure: false,
-//   },
-// }));
-
 app.use(
   session({
     store,
@@ -127,8 +100,6 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       httpOnly: true,
-      secure: true, // Set to true in production with HTTPS
-      sameSite: 'lax'
     }
   })
 );
@@ -140,37 +111,14 @@ app.use(passport.session());
 
 // Debug middleware
 app.use((req, res, next) => {
-  console.log('=== SESSION DEBUG ===');
-  console.log('Session ID:', req.sessionID);
-  console.log('Session:', req.session);
-  console.log('Passport in session:', req.session?.passport);
   console.log('User:', req.user);
-  console.log('Is authenticated:', req.isAuthenticated());
-  console.log('=== END DEBUG ===');
   next();
 });
 
 passport.use(new LocalStrategy(User.authenticate()));
 
-
-
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
-// With explicit methods:
-passport.serializeUser((user, done) => {
-  console.log('Serializing user:', user.id);
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findById(id);
-    console.log('Deserializing user:', user);
-    done(null, user);
-  } catch (error) {
-    done(error);
-  }
-});
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 app.get("/",(req,res)=>{
@@ -188,32 +136,15 @@ app.get("/showRequest", async (req,res)=>{
   res.render("NgoGov/ngoAndGov.ejs", {allRequests});
 });
 
-// Add this route temporarily
-app.get('/debug-users', async (req, res) => {
-    try {
-        const users = await User.find({});
-        console.log('=== ALL USERS IN DATABASE ===');
-        users.forEach(user => {
-            console.log(`Username: ${user.username}, Email: ${user.email}, Role: ${user.role}`);
-        });
-        console.log('=== END USERS LIST ===');
-        res.json(users);
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-//Implementing routers
+// Implementing routers
 app.use("/", victimRouter);
 app.use("/", ngoRouter);
 app.use("/", userRouter);
 
+
 app.get("/helpVictim/:id", async (req,res)=>{
   res.send("hi");
 });
-
-
 
 
 app.listen("3000",()=>{
