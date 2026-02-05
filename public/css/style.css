@@ -136,3 +136,51 @@ h1{
   justify-content: space-between !important;
   margin-left: 500px !important;
 }
+
+
+/* Isolate module */
+#victim-help-status {
+  width: 100%;
+  padding: 40px 0;
+}
+
+/* FORCE center inside any layout */
+#victim-help-status .status-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Status box */
+#victim-help-status .status-card {
+  width: 360px;
+  max-width: 90%;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* helping Status model colors */
+#victim-help-status .Pending { background: #f59e0b; }
+#victim-help-status .Approved { background: #2563eb; }
+#victim-help-status .In-Progress { background: #ea580c; }
+#victim-help-status .Completed { background: #16a34a; }
+#victim-help-status .Rejected { background: #dc2626; }
+
+#victim-help-status .message {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+/* map styling */
+body { margin: 0; padding: 0; }
+#map { 
+       
+       width: 500px; 
+       height: 500px;
+     }

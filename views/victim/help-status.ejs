@@ -1,0 +1,28 @@
+ <% layout("/layouts/generalBoilerplate")%>
+
+
+<!-- to pass the env variable to map.js file -->
+<script>
+  const mapToken = "<%= process.env.MAP_TOKEN%>";
+</script>
+
+
+<section id="victim-help-status">
+   <div class="status-center">
+     <div id="statusCard" class="status-card">
+       <!-- JS injects content here -->
+     </div>
+   </div>
+</section>
+
+
+<!-- map -->
+            <div class="col-6 offset-3 mb-3 maps">
+                <h3>where you'll be</h3>
+                <!-- map div of mapbox -->
+                 <!-- this is comming from container in mapbox parameter -->
+                <div id="map"></div> 
+            </div>
+
+<script src="/js/help-status.js"></script>
+<script src="/js/map.js"></script>

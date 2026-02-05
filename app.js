@@ -25,7 +25,6 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const MongoStore = require("connect-mongo");
 
-
 app.set("views",path.join(__dirname,"views"));
 app.set("view engine","ejs");
 
@@ -36,17 +35,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); 
 
 
+//_________________________________________________________________________________________________________
+
+
 //models
 const User = require("./models/user.js"); 
 const Requests = require("./models/Requests.js");
+
+
+//_________________________________________________________________________________________________________
 
 //web database atlas 
 const MONGO_URL = process.env.MONGO_URL;
 
 
-// local db
-// const MONGO_URL = "mongodb://127.0.0.1:27017/reliefSystem";
-
+//_________________________________________________________________________________________________________
 
 main()
  .then(()=>{
@@ -61,6 +64,9 @@ async function main(){
 }
 
 
+//_________________________________________________________________________________________________________
+
+
 //Q.pass session is part of website or backend?
 // 
 // A.👉 passport.session() is part of the backend, not the frontend (website).
@@ -69,9 +75,6 @@ async function main(){
 // Stores a session ID in the user’s browser as a cookie.
 // When the user makes a new request, the cookie is sent back.
 // passport.session() uses that cookie’s session ID to find the logged-in user, and attaches them as req.user.
-
-
-
 const store = MongoStore.create({
     mongoUrl : MONGO_URL,
     collectionName: "sessions",
@@ -80,7 +83,6 @@ const store = MongoStore.create({
     },
     touchAfter :24 * 3600,
 });
-
 // Better error handling
 store.on('error', function(error) {
   console.log('SESSION STORE ERROR:', error);
@@ -89,6 +91,11 @@ store.on('error', function(error) {
 store.on('connected', function() {
   console.log('MongoStore connected to MongoDB Atlas');
 });
+
+
+
+// _________________________________________________________________________________________________________
+
 
 
 app.use(
@@ -104,7 +111,6 @@ app.use(
   })
 );
 
-
 // Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
@@ -119,6 +125,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+//_________________________________________________________________________________________________________
+
+
+
 
 
 app.get("/",(req,res)=>{
@@ -143,8 +154,43 @@ app.use("/", userRouter);
 
 
 app.get("/helpVictim/:id", async (req,res)=>{
-  res.send("hi");
+  const victimId = req.params.id;
+  res.render("NgoGov/help", { victimId });
+  
 });
+
+const Help = require("./models/help");
+
+app.post("/helpVictim/:id",async(req, res)=>{
+  const  victimId = req.params.id;
+  const helps = [];
+
+  const resources = [
+    {type: "Food", qty: req.body.foodQty},
+     { type: "Water", qty: req.body.waterQty },
+    { type: "Shelter", qty: req.body.shelterQty },
+    { type: "Medical", qty: req.body.medicalQty },
+    { type: "Rescue", qty: req.body.rescueQty }
+  ];
+
+  resources.forEach(r => {
+    if (r.qty && Number(r.qty) > 0) {
+      helps.push({
+        victim: victimId,
+        helpType: r.type,
+        Quantity: Number(r.qty)
+      });
+    }
+  });
+
+  if (helps.length === 0) {
+        return res.send("No help provided");
+  }
+    await Help.insertMany(helps);
+    res.send("Help assigned successfully");
+    console.log(req.body);
+});
+
 
 
 app.listen("3000",()=>{

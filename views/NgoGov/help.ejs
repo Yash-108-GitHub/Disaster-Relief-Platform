@@ -1,3 +1,74 @@
 <% layout("/layouts/generalBoilerplate")%>
 
-hi
+
+
+<!-- to pass the env variable to map.js file -->
+<script>
+  const mapToken = "<%= process.env.MAP_TOKEN%>";
+</script>
+
+
+
+
+<div class="container mt-5">
+  <h2>Victim Request Details</h2>
+
+  <div class="card shadow p-4">
+    <h5>Victim: <request.victimName %></h5>
+    <p><strong>Location:</strong> <request.location %></p>
+    <p><strong>Urgency Score:</strong> <span class="badge bg-danger"> request.urgencyScore %></span></p>
+
+    <hr>
+
+   
+    <form action="/helpVictim/<%= victimId%>" method="POST">
+      <h5>Assign Resources:</h5>
+
+      <div class="form-check">      
+        🍚 Food
+        <input type="number" class="form-control"  name="foodQty" placeholder="Enter quantity" min="0" >
+      </div>
+
+      <div class="form-check">       
+        💧 Water
+        <input type="number" class="form-control"  name="waterQty" placeholder="Enter quantity" min="0" >
+      </div>
+
+      <div class="form-check">        
+        ⛺ Shelter
+        <input type="number" class="form-control"  name="shelterQty" placeholder="Enter quantity" min="0" >
+      </div>
+
+      <div class="form-check">        
+        🩺 Medical
+        <input type="number" class="form-control"  name="medicalQty" placeholder="Enter quantity" min="0" >
+      </div>
+
+      <div class="form-check">
+        🚁 Rescue
+        <input type="number" class="form-control"  name="rescueQty" placeholder="Enter quantity" min="0" >
+      </div>
+
+      <div class="form-check">
+        👷‍♂️ helper
+        <input type="number" class="form-control" min="1">
+      </div>
+
+      <!-- map -->
+       <div class="col-6 offset-3 ">
+          <h3>where you'll be</h3>
+          <div id="map"></div>
+       </div>
+
+      <button type="submit" class="btn btn-success mt-3">✅ Provide Help</button>
+    </form>
+
+    
+  </div>
+</div>
+
+<script src="/js/map.js"></script>
+
+
+
+

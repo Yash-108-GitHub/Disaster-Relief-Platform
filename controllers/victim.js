@@ -34,7 +34,7 @@ module.exports.submitRequestForm = async (req,res)=>{
 }
 
 module.exports.renderMyRequest = (req,res)=>{
-   res.render("my_request.ejs");
+   res.render("victim/help-status");
 }
 
 module.exports.renderEmergencyRequest = (req,res)=>{
