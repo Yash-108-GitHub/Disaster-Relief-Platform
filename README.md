@@ -1,6 +1,6 @@
+# AI-Based Disaster Relief Platform
 Click here to view the project:
-
-Live Demo: https://disaster-relief-platform-q89l.onrender.com
+🚀 Live Demo: https://disaster-relief-platform-q89l.onrender.com
 
 ## Description
 An AI-powered web platform designed to improve disaster response and coordination. The system connects victims, volunteers, NGOs, and government authorities to efficiently manage emergency requests, allocate resources, and optimize rescue routes.
